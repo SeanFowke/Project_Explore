@@ -46,6 +46,7 @@ public class Fireball : MonoBehaviour
 			
 	}
 
+
 	private void OnBecameInvisible()
 	{
 		Destroy(gameObject);

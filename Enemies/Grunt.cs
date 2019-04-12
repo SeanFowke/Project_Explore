@@ -15,6 +15,8 @@ public class Grunt : Enemy
 	[SerializeField] GameObject projectile;
 	[SerializeField] float patrolZoneX;
 	[SerializeField] float patrolZoneY;
+	[SerializeField] float gruntHealth;
+	[SerializeField] float gruntDamage;
 	private Vector2 spawn;
 	private Transform pl;
     void Start()
@@ -25,11 +27,15 @@ public class Grunt : Enemy
 		pl = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 		shotTimer = shotTimerInitial;
 		spawn = transform.position;
+		health = gruntHealth;
+		damage = gruntDamage;
     }
 
-    void Update()
+    protected override void Update()
     {
+		base.Update();
 		Patrol();
+
 	}
 
 	void Patrol()

@@ -34,8 +34,9 @@ public class Tree : Wood
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Sword"))
+        if (col.CompareTag("Fireball"))
         {
+			Destroy(col.gameObject);
             isDead = true;
         }
     }

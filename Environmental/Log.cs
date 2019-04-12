@@ -14,7 +14,7 @@ public class Log : Wood
 	private int spawnChance;
 	private Rigidbody2D rb;
 	[SerializeField] GameObject sticks;
-
+	[SerializeField] GameObject fire;
 	void Start()
 	{
 		hasSpawnedFire = false;
@@ -52,6 +52,14 @@ public class Log : Wood
 
 	private void OnTriggerEnter2D(Collider2D col)
 	{
+		if (col.CompareTag("Fireball"))
+		{
+			
+			var fireComponent = fire.GetComponent<Fire>();
+			Instantiate(fire, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+			hasSpawnedFire = true;
+			destroyTime = fireComponent.burnTime();
+		}
 		if (col.CompareTag("Fire") && isInRadius == false)
 		{
 			isInRadius = true;
