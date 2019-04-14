@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour
 	private float timer = 0;
 	private float totalTime = 0;
 	protected float damage;
-    void Start()
+	void Start()
     {
 		
     }
@@ -70,7 +70,7 @@ public abstract class Enemy : MonoBehaviour
 				health--;
 				Destroy(col.gameObject);
 			}
-			else
+			else if(health <= 0)
 			{
 				Destroy(col.gameObject);
 				Destroy(gameObject);

@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-	private Rigidbody2D rb;
+	public Rigidbody2D rb;
 	public float shotSpeed;
 	public string dir;
+	public float inputX;
+	public float inputY;
+
     void Start()
     {
 		rb = GetComponent<Rigidbody2D>();
@@ -39,7 +42,7 @@ public class Projectile : MonoBehaviour
 		}
 		else if (dir != "Right" && dir != "Right" && dir != "Up" && dir != "Down")
 		{
-			throw new UnityException("No Direction Given to Enemy Projectile");
+			rb.velocity = new Vector2(inputX, inputY);
 		}
 
 	}

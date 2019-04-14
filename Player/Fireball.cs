@@ -5,11 +5,13 @@ using UnityEngine;
 public class Fireball : MonoBehaviour
 {
 	public string dir;
-	[SerializeField] float xSpeed;
-	[SerializeField] float ySpeed;
+	public float xSpeed;
+	public float ySpeed;
 	[SerializeField] float disperseTimeInitial;
 	private Rigidbody2D rb;
 	private float disperseTime;
+	public float inputX;
+	public float inputY;
 	void Start()
     {
 		rb = GetComponent<Rigidbody2D>();
@@ -23,26 +25,26 @@ public class Fireball : MonoBehaviour
 
 	public void Move()
 	{
-		if (dir == "Right")
-		{
-			rb.velocity = new Vector2(xSpeed, 0);
-		}
-		else if (dir == "Left")
-		{
-			rb.velocity = new Vector2(-xSpeed, 0);
-		}
-		else if (dir == "Up")
-		{
-			rb.velocity = new Vector2(0, ySpeed);
-		}
-		else if (dir == "Down")
-		{
-			rb.velocity = new Vector2(0, -ySpeed);
-		}
-		else if (dir != "Right" && dir != "Right" && dir != "Up" && dir != "Down")
-		{
-			throw new UnityException("No Direction Given to Fireball");
-		}
+		//if (dir == "Right")
+		//{
+		//	rb.velocity = new Vector2(xSpeed, 0);
+		//}
+		//else if (dir == "Left")
+		//{
+		//	rb.velocity = new Vector2(-xSpeed, 0);
+		//}
+		//else if (dir == "Up")
+		//{
+		//	rb.velocity = new Vector2(0, ySpeed);
+		//}
+		//else if (dir == "Down")
+		//{
+		//	rb.velocity = new Vector2(0, -ySpeed);
+		//}
+		//else if (dir != "Right" && dir != "Right" && dir != "Up" && dir != "Down")
+		//{
+			rb.velocity = new Vector2(inputX, inputY);
+		//}
 			
 	}
 

@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
 	private bool isStop;
 	[SerializeField] float attackTimerInitial;
 	private float attackTimer;
-	private bool isAttack;
 	private SpriteRenderer sr;
 	private Animator anim;
 	private bool canFire = true;
@@ -29,7 +28,6 @@ public class Player : MonoBehaviour
 	void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-		isAttack = false;
 		attackTimer = attackTimerInitial;
 		sr = GetComponent<SpriteRenderer>();
 		anim = GetComponent<Animator>();
@@ -55,11 +53,11 @@ public class Player : MonoBehaviour
 			rb.velocity = new Vector2(0.0f, 0.0f);
 			
 }
-		if (Input.GetAxisRaw("Horizontal") != 0 )
+		if (Input.GetAxis("Horizontal") != 0 )
         {
             rb.velocity = new Vector2(Input.GetAxis("Horizontal") * playerSpeed, rb.velocity.y);
         }
-        if (Input.GetAxisRaw("Vertical") != 0)
+        if (Input.GetAxis("Vertical") != 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * playerSpeed);
         }
@@ -71,32 +69,38 @@ public class Player : MonoBehaviour
 
 	void ShootFireBall()
 	{
+		Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
 		if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Horizontal") > 0 && canFire == true)
 		{
 			GameObject thisFire = (GameObject)Instantiate(fireBall, transform.position, Quaternion.identity);
 			Fireball fireRef = thisFire.GetComponent<Fireball>();
-			fireRef.dir = "Right";
+			fireRef.inputX = dir.x * fireRef.xSpeed;
+			fireRef.inputY = dir.y * fireRef.ySpeed;
 			canFire = false;
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Horizontal") < 0 && canFire == true)
 		{
 			GameObject thisFire = (GameObject)Instantiate(fireBall, transform.position, Quaternion.identity);
 			Fireball fireRef = thisFire.GetComponent<Fireball>();
-			fireRef.dir = "Left";
+			fireRef.inputX = dir.x * fireRef.xSpeed;
+			fireRef.inputY = dir.y * fireRef.ySpeed;
 			canFire = false;
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Vertical") > 0 && canFire == true)
 		{
 			GameObject thisFire = (GameObject)Instantiate(fireBall, transform.position, Quaternion.identity);
 			Fireball fireRef = thisFire.GetComponent<Fireball>();
-			fireRef.dir = "Up";
+			fireRef.inputX = dir.x * fireRef.xSpeed;
+			fireRef.inputY = dir.y * fireRef.ySpeed;
 			canFire = false;
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Vertical") < 0 && canFire == true)
 		{
 			GameObject thisFire = (GameObject)Instantiate(fireBall, transform.position, Quaternion.identity);
 			Fireball fireRef = thisFire.GetComponent<Fireball>();
-			fireRef.dir = "Down";
+			fireRef.inputX = dir.x * fireRef.xSpeed;
+			fireRef.inputY = dir.y * fireRef.ySpeed;
+
 			canFire = false;
 		}
 

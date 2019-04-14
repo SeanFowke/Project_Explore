@@ -29,7 +29,8 @@ public class Grunt : Enemy
 		spawn = transform.position;
 		health = gruntHealth;
 		damage = gruntDamage;
-    }
+		pl = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+	}
 
     protected override void Update()
     {

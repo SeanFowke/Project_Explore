@@ -44,7 +44,7 @@ public class Dasher : Enemy
 				rb.velocity = dir * dashDistance;
 				dashTime -= Time.deltaTime;
 				dashCool = false;
-				Debug.Log("First");
+
 			}
 			if (dashTime <= 0)
 			{
@@ -53,7 +53,6 @@ public class Dasher : Enemy
 				dashCoolDown -= Time.deltaTime;
 				dashCool = true;
 				rb.velocity = new Vector2(0.0f, 0.0f);
-				Debug.Log("second");
 			}
 			if (dashCoolDown <= 0 && dashCool)
 			{
@@ -61,7 +60,6 @@ public class Dasher : Enemy
 				dashCoolDown = dashCoolDownInitial;
 				canDash = true;
 				rb.velocity = new Vector2(0.0f, 0.0f);
-				Debug.Log("Third");
 			}
 		}
 	}
