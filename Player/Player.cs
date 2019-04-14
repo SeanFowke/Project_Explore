@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float playerSpeed;
-    private Rigidbody2D rb;
+	[SerializeField] float playerSpeed;
+	private Rigidbody2D rb;
 	[SerializeField] GameObject fireBall;
 	private bool isRight;
 	private bool isLeft;
@@ -23,48 +23,50 @@ public class Player : MonoBehaviour
 	private float currentHealth;
 	private Slider healthBar;
 	private Slider coolDownBar;
-	private bool iFrame = false;
+	private int keyCount = 0;
+	private Transform spawn;
 
 	void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
+	{
+		rb = GetComponent<Rigidbody2D>();
 		attackTimer = attackTimerInitial;
 		sr = GetComponent<SpriteRenderer>();
 		anim = GetComponent<Animator>();
 		currentHealth = totalHealth;
 		healthBar = GameObject.Find("HealthBar").GetComponent<Slider>();
 		coolDownBar = GameObject.Find("CoolDown").GetComponent<Slider>();
+		spawn.position = transform.position;
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        MovePlayer();
+	// Update is called once per frame
+	void Update()
+	{
+		MovePlayer();
 		ShootFireBall();
 		HandleAnimation();
 		HandleUI();
 		HandleHealth();
 	}
-
-    void MovePlayer()
-    {
+	#region Input
+	void MovePlayer()
+	{
 		if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
 		{
 			rb.velocity = new Vector2(0.0f, 0.0f);
-			
-}
-		if (Input.GetAxis("Horizontal") != 0 )
-        {
-            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * playerSpeed, rb.velocity.y);
-        }
-        if (Input.GetAxis("Vertical") != 0)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * playerSpeed);
-        }
 
-		
-		
-    }
+		}
+		if (Input.GetAxis("Horizontal") != 0)
+		{
+			rb.velocity = new Vector2(Input.GetAxis("Horizontal") * playerSpeed, rb.velocity.y);
+		}
+		if (Input.GetAxis("Vertical") != 0)
+		{
+			rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * playerSpeed);
+		}
+
+
+
+	}
 
 
 	void ShootFireBall()
@@ -114,7 +116,9 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
+	#endregion
 
+	#region Animation
 	void HandleAnimation()
 	{
 		if (rb.velocity.x > 0)
@@ -214,7 +218,8 @@ public class Player : MonoBehaviour
 			anim.SetBool("IdleRight", true);
 		}
 	}
-
+	#endregion
+	#region UI/Health
 	void HandleUI()
 	{
 		healthBar.value = currentHealth / totalHealth;
@@ -231,15 +236,17 @@ public class Player : MonoBehaviour
 	{
 		if (currentHealth <= 0)
 		{
-			Scene scene = SceneManager.GetActiveScene();
-			SceneManager.LoadScene(scene.name);
+			transform.position = spawn.position;
+			currentHealth = totalHealth;
 		}
 
 
 	}
+	#endregion
 
-   private void OnTriggerEnter2D(Collider2D col)
-    {
+	#region Collisions
+	private void OnTriggerEnter2D(Collider2D col)
+	{
 		if (col.gameObject.CompareTag("River"))
 		{
 			col.isTrigger = false;
@@ -247,17 +254,30 @@ public class Player : MonoBehaviour
 		if (col.gameObject.CompareTag("Projectile"))
 		{
 			TakeDamage(1.0f);
-			iFrame = true;
 		}
-		
-    }
+		if (col.CompareTag("Heart") && currentHealth != totalHealth)
+		{
+			currentHealth = totalHealth;
+			Destroy(col.gameObject);
+		}
+		if (col.CompareTag("Key"))
+		{
+			keyCount++;
+			Destroy(col.gameObject);
+		}
+
+	}
 	private void OnCollisionEnter2D(Collision2D col)
 	{
 		if (col.gameObject.CompareTag("Enemy"))
 		{
 			var enemy = col.gameObject.GetComponent<Enemy>();
 			TakeDamage(enemy.GetDamage());
-			iFrame = true;
+
+		}
+		if (col.gameObject.CompareTag("Door") && keyCount >= 3)
+		{
+			SceneManager.LoadScene("Win");
 		}
 	}
 
@@ -269,4 +289,5 @@ public class Player : MonoBehaviour
 			coli.isTrigger = true;
 		}
 	}
+	#endregion
 }
