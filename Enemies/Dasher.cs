@@ -13,7 +13,7 @@ public class Dasher : Enemy
 	private float dashCoolDown;
 	private bool canDash = true;
 	private bool dashCool = false;
-	[SerializeField] float bouncerHealth;
+	[SerializeField] float dasherHealth;
 	[SerializeField] float dasherDamage;
 	void Start()
     {
@@ -21,7 +21,7 @@ public class Dasher : Enemy
 		pl = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 		dashTime = dashTimeInitial;
 		dashCoolDown = dashCoolDownInitial;
-		health = bouncerHealth;
+		health = dasherHealth;
 		damage = dasherDamage;
 	}
 
@@ -61,6 +61,14 @@ public class Dasher : Enemy
 				canDash = true;
 				rb.velocity = new Vector2(0.0f, 0.0f);
 			}
+		}
+		if (rb.velocity.x > 0)
+		{
+			sr.flipX = false;
+		}
+		else if (rb.velocity.x < 0)
+		{
+			sr.flipX = true;
 		}
 	}
 

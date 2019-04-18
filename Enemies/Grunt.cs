@@ -117,7 +117,15 @@ public class Grunt : Enemy
 				rb.velocity = new Vector2(0, -speed);
 			}
 		}
-		
+		if (rb.velocity.x > 0)
+		{
+			sr.flipX = false;
+		}
+		else if (rb.velocity.x < 0)
+		{
+			sr.flipX = true;
+		}
+
 	}
 	
 
