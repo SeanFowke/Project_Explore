@@ -44,6 +44,10 @@ public class Player : MonoBehaviour
 	private float iFrameTimer;
 	private float flickerTimer = 0;
 
+	private Image keyFr;
+	private Image keyMn;
+	private Image keyCm;
+
 
 	void Start()
 	{
@@ -59,6 +63,9 @@ public class Player : MonoBehaviour
 		spawn.y = gameObject.transform.position.y;
 		shotNumCurrent = shotNumInitial;
 		iFrameTimer = iFrameTimerInitial;
+		keyFr = GameObject.Find("Forest Key").GetComponent<Image>();
+		keyMn = GameObject.Find("Mountain Key").GetComponent<Image>();
+		keyCm = GameObject.Find("Cemetary Key").GetComponent<Image>();
 	}
 
 	// Update is called once per frame
@@ -328,10 +335,23 @@ public class Player : MonoBehaviour
 			currentHealth = totalHealth;
 			Destroy(col.gameObject);
 		}
-		if (col.CompareTag("Key"))
+		if (col.CompareTag("MountainKey"))
 		{
 			keyCount++;
 			Destroy(col.gameObject);
+			keyMn.enabled = true;
+		}
+		if (col.CompareTag("ForestKey"))
+		{
+			keyCount++;
+			Destroy(col.gameObject);
+			keyFr.enabled = true;
+		}
+		if (col.CompareTag("CemetaryKey"))
+		{
+			keyCount++;
+			Destroy(col.gameObject);
+			keyCm.enabled = true;
 		}
 		if (col.CompareTag("Potion"))
 		{
