@@ -7,6 +7,8 @@ public abstract class Enemy : MonoBehaviour
     protected float speed;
 	protected Rigidbody2D rb;
 	protected SpriteRenderer sr;
+	protected AudioSource au;
+	protected AudioManager ado;
 	protected float health;
 	private bool damaged = false;
 	private float timer = 0;
@@ -28,6 +30,8 @@ public abstract class Enemy : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		sr = GetComponent<SpriteRenderer>();
+		au = GetComponent<AudioSource>();
+		ado = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	protected void DamageIndicator()
@@ -37,6 +41,7 @@ public abstract class Enemy : MonoBehaviour
 			timer += Time.deltaTime;
 			totalTime += Time.deltaTime;
 			sr.enabled = true;
+			
 			if (timer > 0.01)
 			{
 				timer -= 0.01f;
@@ -69,11 +74,14 @@ public abstract class Enemy : MonoBehaviour
 				damaged = true;
 				health--;
 				Destroy(col.gameObject);
+				au.PlayOneShot(ado.hitMob);
 			}
 			else if(health <= 0)
 			{
+				au.PlayOneShot(ado.deathMob);
 				Destroy(col.gameObject);
 				Destroy(gameObject);
+
 			}
 		}
 	}

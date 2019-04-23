@@ -43,7 +43,11 @@ public class Player : MonoBehaviour
 	[SerializeField] float iFrameTimerInitial;
 	private float iFrameTimer;
 	private float flickerTimer = 0;
+	//get a refrence to the audio manager and get a ref to own audio source
+	private AudioManager sound;
+	private AudioSource au;
 
+	//handles the key images
 	private Image keyFr;
 	private Image keyMn;
 	private Image keyCm;
@@ -66,6 +70,8 @@ public class Player : MonoBehaviour
 		keyFr = GameObject.Find("Forest Key").GetComponent<Image>();
 		keyMn = GameObject.Find("Mountain Key").GetComponent<Image>();
 		keyCm = GameObject.Find("Cemetary Key").GetComponent<Image>();
+		au = GetComponent<AudioSource>();
+		sound = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	// Update is called once per frame
@@ -109,6 +115,7 @@ public class Player : MonoBehaviour
 			fireRef.inputX = dir.x * fireRef.xSpeed;
 			fireRef.inputY = dir.y * fireRef.ySpeed;
 			shotNumCurrent--;
+			au.PlayOneShot(sound.fireBall);
 			// get a reference to the fireball pass in the direction and multiply it by it's x and y speed then count down the shot counter
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Horizontal") < 0 && canFire == true)
@@ -118,6 +125,7 @@ public class Player : MonoBehaviour
 			fireRef.inputX = dir.x * fireRef.xSpeed;
 			fireRef.inputY = dir.y * fireRef.ySpeed;
 			shotNumCurrent--;
+			au.PlayOneShot(sound.fireBall);
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Vertical") > 0 && canFire == true)
 		{
@@ -126,6 +134,7 @@ public class Player : MonoBehaviour
 			fireRef.inputX = dir.x * fireRef.xSpeed;
 			fireRef.inputY = dir.y * fireRef.ySpeed;
 			shotNumCurrent--;
+			au.PlayOneShot(sound.fireBall);
 		}
 		else if (Input.GetButtonDown("Fire1") && Input.GetAxisRaw("Vertical") < 0 && canFire == true)
 		{
@@ -134,7 +143,8 @@ public class Player : MonoBehaviour
 			fireRef.inputX = dir.x * fireRef.xSpeed;
 			fireRef.inputY = dir.y * fireRef.ySpeed;
 			shotNumCurrent--;
-			
+			au.PlayOneShot(sound.fireBall);
+
 		}
 		if (shotNumCurrent <= 0)
 		{
@@ -329,29 +339,34 @@ public class Player : MonoBehaviour
 		{
 			TakeDamage(1.0f);
 			iFrame = true;
+			au.PlayOneShot(sound.getHit);
 		}
 		if (col.CompareTag("Heart") && currentHealth != totalHealth)
 		{
 			currentHealth = totalHealth;
 			Destroy(col.gameObject);
+			au.PlayOneShot(sound.getHeart);
 		}
 		if (col.CompareTag("MountainKey"))
 		{
 			keyCount++;
 			Destroy(col.gameObject);
 			keyMn.enabled = true;
+			au.PlayOneShot(sound.getKey);
 		}
 		if (col.CompareTag("ForestKey"))
 		{
 			keyCount++;
 			Destroy(col.gameObject);
 			keyFr.enabled = true;
+			au.PlayOneShot(sound.getKey);
 		}
 		if (col.CompareTag("CemetaryKey"))
 		{
 			keyCount++;
 			Destroy(col.gameObject);
 			keyCm.enabled = true;
+			au.PlayOneShot(sound.getKey);
 		}
 		if (col.CompareTag("Potion"))
 		{
@@ -360,6 +375,7 @@ public class Player : MonoBehaviour
 			coolDownBar.gameObject.transform.position += new Vector3(30f, 0.0f, 0.0f);
 			shotNumCurrent = shotNumInitial;
 			Destroy(col.gameObject);
+			au.PlayOneShot(sound.getPotion);
 		}
 
 	}
@@ -370,6 +386,7 @@ public class Player : MonoBehaviour
 			var enemy = col.gameObject.GetComponent<Enemy>();
 			TakeDamage(enemy.GetDamage());
 			iFrame = true;
+			au.PlayOneShot(sound.getHit);
 		}
 		if (col.gameObject.CompareTag("Door") && keyCount >= 3)
 		{
